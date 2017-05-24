@@ -1,0 +1,73 @@
+<html>
+
+<head>
+    <title>The jQuery Example</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--<script type = "text/javascript"-->
+            <!--src = "objects.js"></script>-->
+    <!--<script type = "text/javascript"-->
+            <!--src = "challenge.js"></script>-->
+
+    <style>
+
+        .quote-box{
+            width: 50%;
+            height: 200px;
+            background-color: #dddddd;
+            border: 10px;
+            padding: 10px;
+        }
+        #quote-title{
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            var post;
+            $("#new-quote").on("click", function(e) {
+                e.preventDefault();
+                $.ajax( {
+                    url: 'https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1',
+                    success: function(data) {
+                        post = data.shift(); // The data is an array of posts. Grab the first one.
+                        $('#quote-title').text(post.title);
+                        $('.quote-text').html(post.content);
+                    },
+                    cache: false
+                });
+            });
+
+            $("#twittup").on("click", function(e){
+                location.href = 'https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text='+ post.content;
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+
+<h1>Hello world</h1>
+
+<div class="container-fluid">
+
+    <div class="buttons">
+
+        <button class="button" id="new-quote" style="background-color: rgb(22, 160, 133);">New quote</button>
+    </div>
+    <div class="quote-box">
+        <div id="quote-title"></div>
+        <div class="quote-text" style="opacity: 1;">
+
+        </div>
+
+
+    </div>
+
+    <button id="twittup">Twitt up</button>
+    <div id="resultPost"></div>
+
+</div>
+</body>
+
+</html>
